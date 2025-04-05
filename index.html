@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebAR Online</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+      video { display: none; }
+    </style>
+  </head>
+  <body>
+    <video id="ar-video" autoplay loop muted playsinline crossorigin="anonymous">
+      <source src="video.mp4" type="video/mp4">
+    </video>
+
+    <a-scene embedded arjs="sourceType: webcam; facingMode: environment;" vr-mode-ui="enabled: false;">
+      <a-marker preset="hiro" emitevents="true">
+        <a-video 
+          src="#ar-video" 
+          width="2" height="1" 
+          position="0 0 0"
+          rotation="-90 0 0">
+        </a-video>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+      const marker = document.querySelector('a-marker');
+      marker.addEventListener('markerFound', () => {
+        console.log('✅ Marker detected');
+      });
+      marker.addEventListener('markerLost', () => {
+        console.log('❌ Marker lost');
+      });
+
+      const vid = document.getElementById('ar-video');
+      document.addEventListener("DOMContentLoaded", () => {
+        vid.play().catch(e => console.log("Video play error:", e));
+      });
+    </script>
+  </body>
+</html>
